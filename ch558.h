@@ -28,6 +28,7 @@ typedef __code const uint8_t    uint8_c;
 
 typedef volatile uint16_t       uint16_v;
 typedef __pdata uint16_v        uint16_pv;
+typedef __xdata uint16_v        uint16_xv;
 
 /*----- __sfr --------------------------------------------------------------*/
 /*  __sbit are bit addressable, others are byte addressable */
@@ -885,29 +886,30 @@ uint8_pv __at (0x47)        pUEP2_3_MOD;
 #define bUEP2_RX_EN         0x08      // enable USB endpoint 2 receiving (OUT)
 #define bUEP2_TX_EN         0x04      // enable USB endpoint 2 transmittal (IN)
 #define bUEP2_BUF_MOD       0x01      // buffer mode of USB endpoint 2
+#define SET_UEP_DMA_ADDR(uep, ptr) uep ## _DMA = (((uint16_t) (&ptr[0]) >> 8) & 0x00FF) | (((uint16_t) (&ptr[0]) << 8) & 0xFF00)
 uint8_xv __at (0x2448)      UEP0_DMA_H; // endpoint 0&4 buffer start address high byte
 uint8_xv __at (0x2449)      UEP0_DMA_L; // endpoint 0&4 buffer start address low byte
 uint8_pv __at (0x48)        pUEP0_DMA_H;
 uint8_pv __at (0x49)        pUEP0_DMA_L;
-#define UEP0_DMA            (uint16_v) UEP0_DMA_H
+uint16_xv __at (0x2448)     UEP0_DMA;
 uint16_pv __at (0x48)       pUEP0_DMA;  // endpoint 0&4 buffer start address, must even address, big-endian
 uint8_xv __at (0x244A)      UEP1_DMA_H; // endpoint 1 buffer start address high byte
 uint8_xv __at (0x244B)      UEP1_DMA_L; // endpoint 1 buffer start address low byte
 uint8_pv __at (0x4A)        pUEP1_DMA_H;
 uint8_pv __at (0x4B)        pUEP1_DMA_L;
-#define UEP1_DMA            (uint16_v) UEP1_DMA_H
+uint16_xv __at (0x244A)     UEP1_DMA;
 uint16_pv __at (0x4A)       pUEP1_DMA;  // endpoint 1 buffer start address, must even address, big-endian
 uint8_xv __at (0x244C)      UEP2_DMA_H; // endpoint 2 buffer start address high byte
 uint8_xv __at (0x244D)      UEP2_DMA_L; // endpoint 2 buffer start address low byte
 uint8_pv __at (0x4C)        pUEP2_DMA_H;
 uint8_pv __at (0x4D)        pUEP2_DMA_L;
-#define UEP2_DMA            (uint16_v) UEP2_DMA_H
+uint16_xv __at (0x244C)     UEP2_DMA;
 uint16_pv __at (0x4C)       pUEP2_DMA;  // endpoint 2 buffer start address, must even address, big-endian
 uint8_xv __at (0x244E)      UEP3_DMA_H; // endpoint 3 buffer start address high byte
 uint8_xv __at (0x244F)      UEP3_DMA_L; // endpoint 3 buffer start address low byte
 uint8_pv __at (0x4E)        pUEP3_DMA_H;
 uint8_pv __at (0x4F)        pUEP3_DMA_L;
-#define UEP3_DMA            (uint16_v) UEP3_DMA_H
+uint16_xv __at (0x244E)     UEP3_DMA;
 uint16_pv __at (0x4E)       pUEP3_DMA;  // endpoint 3 buffer start address, must even address, big-endian
 
 /*  LED Registers on xDATA, xSFR  */
@@ -944,7 +946,7 @@ uint8_xv __at (0x2884)      LED_DMA_AH; // DMA address high byte, automatic incr
 uint8_xv __at (0x2885)      LED_DMA_AL; // DMA address low byte, automatic increasing after DMA
 uint8_pv __at (0x84)        pLED_DMA_AH;
 uint8_pv __at (0x85)        pLED_DMA_AL;
-#define LED_DMA             (uint16_v) LED_DMA_AH   // DMA address, must even address, big-endian, automatic increasing after DMA
+uint16_xv __at (0x2884)     LED_DMA;   // DMA address, must even address, big-endian, automatic increasing after DMA
 uint16_pv __at (0x84)       pLED_DMA;
 uint8_xv __at (0x2886)      LED_DMA_CN; // DMA remainder word count, just main buffer and exclude aux buffer, automatic decreasing after DMA
 uint8_pv __at (0x86)        pLED_DMA_CN;
@@ -952,7 +954,7 @@ uint8_xv __at (0x2888)      LED_DMA_XH; // aux buffer DMA address high byte, aut
 uint8_xv __at (0x2889)      LED_DMA_XL; // aux buffer DMA address low byte, automatic increasing after DMA
 uint8_pv __at (0x88)        pLED_DMA_XH;
 uint8_pv __at (0x89)        pLED_DMA_XL;
-#define LED_DMA_X           (uint16_v) LED_DMA_XH   // aux buffer DMA address, must even address, big-endian, automatic increasing after DMA
+uint16_xv __at (0x2888)     LED_DMA_X;   // aux buffer DMA address, must even address, big-endian, automatic increasing after DMA
 uint16_pv __at (0x88)       pLED_DMA_X;
 
 /*----- Reference Information --------------------------------------------*/
